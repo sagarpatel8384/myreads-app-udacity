@@ -44,7 +44,7 @@ class Book extends Component {
 
 Book.propTypes = {
   bookData: PropTypes.object.isRequired,
-  shelf: PropTypes.string,
+  shelf: PropTypes.string.isRequired,
   updateBook: PropTypes.func.isRequired
 };
 

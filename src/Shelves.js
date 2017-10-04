@@ -8,7 +8,7 @@ class Shelves extends Component {
     const books = (status) => {
       return this.props.books.map((book) => {
         if (book.shelf === status) {
-          return <Book key={book.id} bookData={book} updateBook={this.props.updateBook} />;
+          return <Book key={book.id} bookData={book} updateBook={this.props.updateBook} shelf={book.shelf} />;
         } 
         return null;
       });
