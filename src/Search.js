@@ -11,33 +11,54 @@ class Search extends Component {
     this.state = {
       searchResults: [],
       trackedBooks: {}
-    }
+    };
   }
-  
+
+  componentWillMount() {
+    this.trackBooks(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
+    this.trackBooks(nextProps);
+  }
+
+  trackBooks = (bookProps) => {
     const trackedBooks = {};
-    
-    nextProps.books.forEach((book) => {
+
+    bookProps.books.forEach((book) => {
       trackedBooks[book.id] = book.shelf;
     });
-    
+
     this.setState({ trackedBooks });
-  }
-  
+  };
+
   search = (e) => {
     BooksAPI.search(e.target.value).then((searchResults) => {
       this.setState({ searchResults });
     });
-  }
+  };
   
   render() {
-    const books = this.state.searchResults.length && this.state.searchResults.map((book) => {
-	  if (Object.keys(this.state.trackedBooks).includes(book.id)) {
-        return <Book key={book.id} bookData={book} shelf={this.state.trackedBooks[book.id]}/>;
-      }
-      return <Book key={book.id} bookData={book} />;
-    });
-    
+    let books;
+
+    if (!this.state.searchResults.error) {
+      books = this.state.searchResults.map((book) => {
+        if (Object.keys(this.state.trackedBooks).includes(book.id)) {
+          return (
+            <Book
+              key={book.id}
+              bookData={book}
+              shelf={this.state.trackedBooks[book.id]}
+              updateBook={this.props.updateBook}
+            />
+          );
+        }
+        return <Book key={book.id} bookData={book} updateBook={this.props.updateBook}/>;
+      });
+    } else {
+      books = <h1>No Results Found</h1>;
+    }
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -48,7 +69,7 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-			{books}
+			      {books}
           </ol>
         </div>
       </div>
@@ -57,7 +78,8 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  updateBook: PropTypes.func.isRequired
 };
 
 export default Search;

@@ -8,7 +8,7 @@ class Shelves extends Component {
     const books = (status) => {
       return this.props.books.map((book) => {
         if (book.shelf === status) {
-          return <Book key={book.id} bookData={book} />;
+          return <Book key={book.id} bookData={book} updateBook={this.props.updateBook} />;
         } 
         return null;
       });
@@ -27,7 +27,7 @@ class Shelves extends Component {
                 <h2 className="bookshelf-title">Currently Reading</h2>
                 <div className="bookshelf-books">
                   <ol className="books-grid">
-        			{books('currentlyReading')}
+        			      {books('currentlyReading')}
                   </ol>
                 </div>
               </div>
@@ -37,7 +37,7 @@ class Shelves extends Component {
                 <h2 className="bookshelf-title">Want to Read</h2>
                 <div className="bookshelf-books">
                   <ol className="books-grid">
-        			{books('wantToRead')}
+        			      {books('wantToRead')}
                   </ol>
                 </div>
               </div>
@@ -47,7 +47,7 @@ class Shelves extends Component {
                 <h2 className="bookshelf-title">READ</h2>
                 <div className="bookshelf-books">
                   <ol className="books-grid">
-        			{books('read')}
+        			      {books('read')}
                   </ol>
                 </div>
               </div>
@@ -65,7 +65,8 @@ class Shelves extends Component {
 }
 
 Shelves.propTypes = {
-  books: PropTypes.array.isRequired
+  books: PropTypes.array,
+  updateBook: PropTypes.func.isRequired
 };
 
 export default Shelves;
